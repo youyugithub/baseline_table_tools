@@ -8,6 +8,9 @@ num_to_str<-function(x,digits=1)sprintf(paste0("%.",digits,"f"),x)
 summarize_table<-function(...,category=NULL,missing=NULL,digits=1){
   a_list<-list(...)
   if(is.null(category))category<-sort(unique(unlist(a_list)))
+  for(idx in 1:length(a_list)){
+    a_list[[idx]]<-factor(a_list[[idx]],category)
+  }
   if(is.null(missing))missing<-any(is.na(unlist(a_list)))
   a_mat<-c()
   if(missing){
@@ -17,7 +20,6 @@ summarize_table<-function(...,category=NULL,missing=NULL,digits=1){
   }
   for(idx in 1:length(a_list)){
     a_value<-a_list[[idx]]
-    a_value<-factor(a_value,category)
     a_table<-table(a_value,useNA="no")
     if(missing){
       a_col<-c(
